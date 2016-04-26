@@ -15,7 +15,13 @@ var collectionListCmd = &cobra.Command{
 	Short: "collection",
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
+		collections, err := Client().GetCollections()
+		if err != nil {
+			cmd.Println(err)
+			return
+		}
 
+		cmd.Println(collections)
 	},
 }
 

@@ -15,12 +15,11 @@ import (
 var cfgFile string
 var config *cli.Config
 
-func ConfigPath() string {
-	return cfgFile
-}
-
 func Config() *cli.Config {
-	return config
+	return &cli.Config{
+		Path: cfgFile,
+
+	}
 }
 
 func Client() *neutrino.ApiClient {
@@ -60,14 +59,12 @@ func initConfig() {
 		return
 	}
 
-	config = &cli.Config{}
+	config = Config()
 	unmarshalError := yaml.Unmarshal(b, config)
 	if unmarshalError != nil {
 		fmt.Println(unmarshalError)
 		return
 	}
-
-	config.Path = cfgFile
 
 	neutrino.InitClient(cli.HTTP_ADDR, cli.WS_ADDR, config.Token, "cli")
 }
